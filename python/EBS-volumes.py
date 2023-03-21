@@ -44,7 +44,6 @@ def lambda_handler(event, context):
         #     print("Successfully deleted all volumes")
         # except Exception as e:
         #     print("Error in process with error being: " + str(e))
-
     return {
         'message' : message
     }

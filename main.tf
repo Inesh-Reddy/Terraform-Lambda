@@ -52,14 +52,14 @@ resource "aws_iam_role_policy_attachment" "attach_iam_policy_to_iam_role" {
 data "archive_file" "zip_the_python_code" {
     type = "zip"
     source_dir = "${path.module}/python/"
-    output_path = "${path.module}/python/hello-python.zip"
+    output_path = "${path.module}/python/EBS-volumes.zip"
 }
 
 resource "aws_lambda_function" "terraform_lambda_function" {
-    filename = "${path.module}/python/hello-python.zip"
+    filename = "${path.module}/python/EBS-volumes.zip"
     function_name = "Test-lambda-function"
     role = aws_iam_role.lambda_role.arn
-    handler = "hello-python.lambda_handler"
+    handler = "EBS-volumes.lambda_handler"
     runtime = "python3.9"
     depends_on = [aws_iam_role_policy_attachment.attach_iam_policy_to_iam_role]
 }
