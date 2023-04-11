@@ -4,7 +4,6 @@ import os
 import threading
 
 def lambda_handler(event, context):
-    message = 'Hello {} !'.format(event['key1'])
 
     regions = ['ap-south-1', 'us-east-1']
 
@@ -31,19 +30,16 @@ def lambda_handler(event, context):
         if len(volumes_to_delete) == 0 :
             print("No unattached EBS volumes")
             continue
-        # threads = []
-        # for volume in volumes_to_delete:
-        #     t = threading.Thread(target=delete_unused_volumes(volume))
-        #     threads.append(t)
-        #     t.start()
-        # waiter = client.get_waiter('volume_deleted')
-        # try:
-        #     waiter.wait(
-        #         VolumeIds=volumes_to_delete,
-        #     )
-        #     print("Successfully deleted all volumes")
-        # except Exception as e:
-        #     print("Error in process with error being: " + str(e))
-    return {
-        'message' : message
-    }
+        threads = []
+        for volume in volumes_to_delete:
+            t = threading.Thread(target=delete_unused_volumes(volume))
+            threads.append(t)
+            t.start()
+        waiter = client.get_waiter('volume_deleted')
+        try:
+            waiter.wait(
+                VolumeIds=volumes_to_delete,
+            )
+            print("Successfully deleted all volumes")
+        except Exception as e:
+            print("Error in process with error being: " + str(e))
